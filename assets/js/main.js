@@ -181,6 +181,21 @@
   modal.addEventListener("click", function (e) { if (e.target === modal) closePayment(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !modal.hidden) closePayment(); });
 
+  // Header: solid background once scrolled, and the mobile menu toggle.
+  var nav = document.querySelector(".nav");
+  var toggle = nav.querySelector(".nav__toggle");
+  function onScroll() { nav.classList.toggle("is-scrolled", window.scrollY > 40); }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+  function setMenu(open) {
+    nav.classList.toggle("is-open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+  toggle.addEventListener("click", function () { setMenu(!nav.classList.contains("is-open")); });
+  nav.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { setMenu(false); }); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+
   // Floating mobile ticket button once the hero is scrolled past.
   var hero = document.querySelector(".hero");
   if ("IntersectionObserver" in window && hero) {
