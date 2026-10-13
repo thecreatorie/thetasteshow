@@ -71,12 +71,26 @@
       <div class="wrap">
         <p class="eyebrow">Tickets</p>
         <h2>Upcoming Shows</h2>
-        <div id="show-list" class="show-list">
-          <noscript>
-            <p><a class="btn" href="https://www.tickettailor.com/events/fitnesstemplellc">See all dates &amp; buy tickets</a></p>
-          </noscript>
+        <div id="show-list" class="show-list" aria-live="polite">
+          <p class="loading">Loading shows…</p>
+          <noscript><p>Please enable JavaScript to buy tickets.</p></noscript>
         </div>
-        <p class="fine">Tickets are sold securely through Ticket Tailor. You'll receive your tickets by email.</p>
+
+        <form id="buy" class="buy" hidden novalidate>
+          <h3 class="buy__title" id="buy-title">Choose your tickets</h3>
+          <div id="ticket-types" class="tt-list"></div>
+          <div class="buy__fields">
+            <label>Full name<input name="name" autocomplete="name" required maxlength="120"></label>
+            <label>Email<input name="email" type="email" autocomplete="email" required maxlength="200"></label>
+            <label><span>Phone <span class="opt">(optional)</span></span><input name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
+          </div>
+          <div class="buy__footer">
+            <p class="buy__total">Total <strong id="buy-total">$0</strong></p>
+            <button class="btn" id="buy-submit" type="submit" disabled>Continue to Payment</button>
+          </div>
+          <p class="form-error" id="buy-error" role="alert" hidden></p>
+          <p class="fine">Secure card payment by Stripe. Your tickets — each with its own QR code — appear right after payment and are sent to your email.</p>
+        </form>
       </div>
     </section>
 
@@ -120,15 +134,19 @@
         </details>
         <details>
           <summary>How do I get my tickets?</summary>
-          <p>Tickets are purchased through Ticket Tailor and emailed to you right away. Need to find or change an order? Use <a href="https://www.tickettailor.com/events/fitnesstemplellc" target="_blank" rel="noopener">Manage tickets on Ticket Tailor</a>.</p>
+          <p>Buy right here on this page. As soon as your payment goes through you'll see your tickets, each with its own QR code, and we'll send a link to your email. Show the QR code (or a screenshot of it) at the door — every guest gets their own code, even at a table.</p>
         </details>
         <details>
           <summary>Who is behind TASTE?</summary>
           <p>TASTE is created and produced by Fawnia Mondey and presented by Fitness Temple, a Las Vegas studio dedicated to pole fitness, aerial arts and movement.</p>
         </details>
         <details>
-          <summary>I have another question.</summary>
-          <p>Reach out through the <a href="https://www.tickettailor.com/promoter/help/link/fitnesstemplellc" target="_blank" rel="noopener">event organizer contact form</a> and we'll get back to you.</p>
+          <summary>What's the difference between GA, VIP and a table?</summary>
+          <p>General Admission gets you in with open seating. VIP puts you in premium seats close to the stage. A table reserves a spot for your whole group — each guest gets their own ticket, so friends can arrive separately.</p>
+        </details>
+        <details>
+          <summary>I lost my tickets.</summary>
+          <p>Open the link in your confirmation email to see them again. No email? Come to the door with your ID — we can find you on the guest list by name.</p>
         </details>
       </div>
     </section>
@@ -152,7 +170,19 @@
 
   <a href="#dates" class="sticky-buy btn" id="sticky-buy">Get Tickets</a>
 
-  <script src="assets/js/shows.js"></script>
+  <div class="modal" id="pay-modal" hidden>
+    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="pay-title">
+      <div class="modal__head">
+        <h3 id="pay-title">Payment</h3>
+        <button class="modal__close" type="button" id="pay-close" aria-label="Close">&times;</button>
+      </div>
+      <p class="fine" id="pay-hold">Your seats are held for 30 minutes.</p>
+      <div id="stripe-checkout"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/api.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>
