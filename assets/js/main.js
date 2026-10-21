@@ -51,7 +51,7 @@
         (s.ends_at ? " – " + F.time(s.ends_at) : "") + (types.length ? " · from " + F.money(from) : "") + "</p></div>";
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "btn";
+      btn.className = "btn btn--primary";
       if (!salesOpen) { btn.textContent = "On Sale Soon"; btn.disabled = true; }
       else if (left <= 0) { btn.textContent = "Sold Out"; btn.disabled = true; }
       else { btn.textContent = "Get Tickets"; btn.addEventListener("click", function () { select(s, card); }); }

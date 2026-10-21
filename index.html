@@ -3,85 +3,162 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TASTE The Show — Burlesque &amp; Variety by Fawnia Mondey | Las Vegas</title>
-  <meta name="description" content="TASTE the Show by Fawnia Mondey — sensual pole artistry, sizzling burlesque, acrobatics, contortion and high-energy dance at Gipsy Nightclub, Las Vegas. Get tickets.">
-  <meta name="theme-color" content="#0b0b0c">
+  <title>TASTE The Show — Pole, Burlesque &amp; Variety by Fawnia Mondey | Las Vegas</title>
+  <meta name="description" content="TASTE the Show by Fawnia Mondey — Las Vegas's hottest variety show. Sensual pole artistry, sizzling burlesque, contortion, acrobatics and high-energy dance at Gipsy Nightclub. Get tickets.">
+  <meta name="theme-color" content="#07020d">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="TASTE The Show — by Fawnia Mondey">
-  <meta property="og:description" content="Las Vegas's hottest variety show: pole artistry, burlesque, acrobatics &amp; dance at Gipsy Nightclub.">
+  <meta property="og:description" content="Las Vegas's hottest variety show: pole artistry, burlesque, contortion &amp; dance at Gipsy Nightclub.">
   <meta property="og:image" content="assets/img/og.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700;1,900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
+
   <header class="nav">
-    <a href="#top" class="nav__logo" aria-label="TASTE home">TASTE</a>
+    <a href="#top" class="nav__logo" aria-label="TASTE The Show — home"><img src="assets/img/logo.png" alt="TASTE The Show" width="1298" height="698"></a>
     <nav class="nav__links" id="nav-links" aria-label="Main">
       <a href="#about">The Show</a>
-      <a href="#dates">Dates</a>
+      <a href="#night">The Night</a>
+      <a href="#dates">Tickets</a>
       <a href="#venue">Venue</a>
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav__actions">
-      <a href="#dates" class="btn btn--small">Tickets</a>
+      <a href="#dates" class="btn btn--primary btn--small">Get Tickets</a>
       <button class="nav__toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="Open menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <main id="top">
+  <main id="main">
     <!-- HERO -->
-    <section class="hero">
-      <img class="hero__img" src="assets/img/hero.jpg" alt="A TASTE performer in black and red strappy costume and stilettos, reclining on a silver tufted bench" fetchpriority="high">
-      <div class="hero__shade"></div>
-      <div class="hero__content">
-        <p class="eyebrow">Fawnia Mondey presents</p>
-        <h1 class="hero__title">TASTE<span>the show</span></h1>
-        <p class="hero__tagline">Las Vegas's hottest variety show — pole, burlesque, acrobatics &amp; dance, all in one sizzling night.</p>
-        <div class="hero__next" id="hero-next" aria-live="polite"></div>
-        <div class="hero__cta">
-          <a class="btn" id="hero-buy" href="#dates">Get Tickets</a>
-          <a class="btn btn--ghost" href="#about">What is TASTE?</a>
+    <section class="hero" id="top">
+      <div class="hero__bg" aria-hidden="true">
+        <div class="grid-floor"></div>
+        <svg class="traces" viewBox="0 0 1440 800" preserveAspectRatio="none">
+<g class="base">
+          <path d="M0 210 H260 L330 140 H620" />
+          <path d="M0 520 H140 L220 600 H520 L580 660 H900" />
+          <path d="M1440 120 H1180 L1110 190 H900" />
+          <path d="M1440 610 H1250 L1180 540 H980" />
+          </g>
+          <g class="pulse">
+          <path d="M0 210 H260 L330 140 H620" />
+          <path d="M0 520 H140 L220 600 H520 L580 660 H900" />
+          <path d="M1440 120 H1180 L1110 190 H900" />
+          <path d="M1440 610 H1250 L1180 540 H980" />
+          </g>
+          <circle cx="620" cy="140" r="6" /><circle cx="900" cy="660" r="6" />
+          <circle cx="900" cy="190" r="6" /><circle cx="980" cy="540" r="6" />
+        </svg>
+        <div class="glow glow--a"></div>
+        <div class="glow glow--b"></div>
+      </div>
+
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow">Las Vegas · Fawnia Mondey presents</p>
+          <h1 class="hero__logo">
+            <img src="assets/img/logo.png" alt="TASTE The Show" width="1298" height="698" fetchpriority="high">
+          </h1>
+          <p class="hero__sub">Pole <i>·</i> Burlesque <i>·</i> Contortion <i>·</i> Variety</p>
+          <p class="lead">Las Vegas's hottest variety show. Powerhouse women, sensual pole artistry and gravity-defying tricks — all in one sizzling, show-stopping night.</p>
+          <div class="hero__next" id="hero-next" aria-live="polite"></div>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#dates">Get Tickets</a>
+            <a class="btn" href="#about">See the Show</a>
+          </div>
+          <ul class="chips" aria-label="What's in the show">
+            <li>Pole Artistry</li><li>Burlesque</li><li>Contortion</li><li>Acrobatics</li><li>Live Variety</li>
+          </ul>
         </div>
+
+        <figure class="frame hero__visual">
+          <img src="assets/img/hero.jpg" alt="A TASTE performer in black and red strappy costume and stilettos, reclining on a silver tufted bench" width="1500" height="1000">
+          <figcaption><span class="live-dot"></span> Live · Gipsy Nightclub · Las Vegas</figcaption>
+        </figure>
       </div>
     </section>
 
-    <!-- ABOUT -->
+    <!-- TICKER -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>Sensual Pole</span><span>Sizzling Burlesque</span><span>Contortion</span><span>Aerial Acrobatics</span><span>High-Energy Dance</span><span>Gipsy Nightclub</span><span>Las Vegas</span><span>Bring Tip Money</span>
+        <span>Sensual Pole</span><span>Sizzling Burlesque</span><span>Contortion</span><span>Aerial Acrobatics</span><span>High-Energy Dance</span><span>Gipsy Nightclub</span><span>Las Vegas</span><span>Bring Tip Money</span>
+      </div>
+    </div>
+
+    <!-- THE SHOW -->
     <section class="section about" id="about">
-      <div class="wrap about__grid">
+      <img class="about__dancer" src="assets/img/dancer.png" alt="" aria-hidden="true" loading="lazy">
+      <div class="container about__grid">
         <div>
-          <p class="eyebrow">The Show</p>
-          <h2>Where artistry, movement &amp; pure entertainment collide.</h2>
-          <p class="lead">TASTE the Show, by Fawnia Mondey, is an unforgettable night showcasing the best talent across pole artistry, contortion, and beautiful dancers — all in one show-stopping experience.</p>
-          <p>A lineup of powerhouse performers takes the stage for an evening that keeps you on the edge of your seat from the first beat to the final bow.</p>
+          <p class="eyebrow"><b>01</b> The Show</p>
+          <h2>Where artistry, movement &amp; <span class="neon">pure entertainment</span> collide</h2>
+          <p class="lead">TASTE the Show, by Fawnia Mondey, is an unforgettable night showcasing the best talent across pole artistry, contortion and beautiful dancers — all in one show-stopping experience.</p>
+          <p class="muted">A lineup of powerhouse performers takes the stage for an evening that keeps you on the edge of your seat from the first beat to the final bow.</p>
+          <a class="btn btn--primary" href="#dates">Get Tickets</a>
         </div>
-        <ul class="acts">
-          <li><span class="acts__icon" aria-hidden="true">✦</span><div><h3>Sensual Pole Artistry</h3><p>Strength, grace and seduction, suspended in mid-air.</p></div></li>
-          <li><span class="acts__icon" aria-hidden="true">✦</span><div><h3>Sizzling Burlesque</h3><p>Classic tease with a modern Vegas edge.</p></div></li>
-          <li><span class="acts__icon" aria-hidden="true">✦</span><div><h3>Gravity-Defying Acrobatics</h3><p>Contortion and aerial feats that bend belief.</p></div></li>
-          <li><span class="acts__icon" aria-hidden="true">✦</span><div><h3>High-Energy Dance &amp; Variety</h3><p>Electrifying stage moments, one after another.</p></div></li>
-        </ul>
+        <div class="acts">
+          <article class="act frame">
+            <span class="act__num">01</span>
+            <h3>Sensual Pole</h3>
+            <p>Strength, grace and seduction — suspended in mid-air.</p>
+          </article>
+          <article class="act frame">
+            <span class="act__num">02</span>
+            <h3>Sizzling Burlesque</h3>
+            <p>Classic tease with a modern Vegas edge.</p>
+          </article>
+          <article class="act frame">
+            <span class="act__num">03</span>
+            <h3>Contortion &amp; Acro</h3>
+            <p>Gravity-defying feats that bend belief.</p>
+          </article>
+          <article class="act frame">
+            <span class="act__num">04</span>
+            <h3>Dance &amp; Variety</h3>
+            <p>Electrifying stage moments, back to back.</p>
+          </article>
+        </div>
       </div>
     </section>
 
-    <!-- DATES / TICKETS -->
+    <!-- THE NIGHT -->
+    <section class="section night" id="night">
+      <div class="container">
+        <p class="eyebrow"><b>02</b> The Night</p>
+        <h2>Your night at <span class="neon">TASTE</span></h2>
+        <ol class="timeline">
+          <li><span class="timeline__time">7:00<small>PM</small></span><h3>Doors</h3><p>Grab a drink, find your seat, soak up the room.</p></li>
+          <li><span class="timeline__time">8:00<small>PM</small></span><h3>Showtime</h3><p>Lights down. Pole, burlesque, contortion, dance.</p></li>
+          <li><span class="timeline__time">9:30<small>PM</small></span><h3>Encore</h3><p>Finale, photos and a night you'll be talking about.</p></li>
+          <li><span class="timeline__time timeline__time--icon">$</span><h3>Tip Your Faves</h3><p>Bring tipping money — we'll make change for you.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TICKETS -->
     <section class="section dates" id="dates">
-      <div class="wrap">
-        <p class="eyebrow">Tickets</p>
-        <h2>Upcoming Shows</h2>
+      <div class="container">
+        <p class="eyebrow"><b>03</b> Tickets</p>
+        <h2>Upcoming <span class="neon">shows</span></h2>
         <div id="show-list" class="show-list" aria-live="polite">
           <p class="loading">Loading shows…</p>
           <noscript><p>Please enable JavaScript to buy tickets.</p></noscript>
         </div>
 
-        <form id="buy" class="buy" hidden novalidate>
+        <form id="buy" class="buy frame" hidden novalidate>
           <h3 class="buy__title" id="buy-title">Choose your tickets</h3>
           <div id="ticket-types" class="tt-list"></div>
           <div class="buy__fields">
@@ -91,7 +168,7 @@
           </div>
           <div class="buy__footer">
             <p class="buy__total">Total <strong id="buy-total">$0</strong></p>
-            <button class="btn" id="buy-submit" type="submit" disabled>Continue to Payment</button>
+            <button class="btn btn--primary" id="buy-submit" type="submit" disabled>Continue to Payment</button>
           </div>
           <p class="form-error" id="buy-error" role="alert" hidden></p>
           <p class="fine">Secure card payment by Stripe. Your tickets — each with its own QR code — appear right after payment and are sent to your email.</p>
@@ -101,23 +178,20 @@
 
     <!-- VENUE -->
     <section class="section venue" id="venue">
-      <div class="wrap venue__grid">
+      <div class="container venue__grid">
         <div>
-          <p class="eyebrow">The Venue</p>
-          <h2>Gipsy Nightclub</h2>
-          <p class="lead">TASTE has a sizzling new home.</p>
-          <address>
-            4605 Paradise Rd<br>
-            Las Vegas, NV 89169
-          </address>
+          <p class="eyebrow"><b>04</b> The Venue</p>
+          <h2>Gipsy <span class="neon">Nightclub</span></h2>
+          <p class="lead">TASTE has a sizzling new home on Paradise Road.</p>
+          <address>4605 Paradise Rd<br>Las Vegas, NV 89169</address>
           <dl class="times">
             <div><dt>Doors</dt><dd>7:00 PM</dd></div>
             <div><dt>Show</dt><dd>8:00 PM</dd></div>
             <div><dt>Ends</dt><dd>~9:30 PM</dd></div>
           </dl>
-          <a class="btn btn--ghost" href="https://www.google.com/maps/search/?api=1&query=Gipsy+Nightclub+4605+Paradise+Rd+Las+Vegas+NV+89169" target="_blank" rel="noopener">Get Directions</a>
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Gipsy+Nightclub+4605+Paradise+Rd+Las+Vegas+NV+89169" target="_blank" rel="noopener">Get Directions</a>
         </div>
-        <div class="map">
+        <div class="frame map">
           <iframe title="Map to Gipsy Nightclub" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
             src="https://www.google.com/maps?q=Gipsy+Nightclub,+4605+Paradise+Rd,+Las+Vegas,+NV+89169&output=embed"></iframe>
         </div>
@@ -126,9 +200,9 @@
 
     <!-- FAQ -->
     <section class="section faq" id="faq">
-      <div class="wrap">
-        <p class="eyebrow">Good to Know</p>
-        <h2>Before You Go</h2>
+      <div class="container faq__inner">
+        <p class="eyebrow"><b>05</b> Good to Know</p>
+        <h2>Before you <span class="neon">go</span></h2>
         <details open>
           <summary>Should I bring cash?</summary>
           <p>Yes — bring your tipping money! Show your favorite performers some love. And don't worry, we'll make change for you.</p>
@@ -142,10 +216,6 @@
           <p>Buy right here on this page. As soon as your payment goes through you'll see your tickets, each with its own QR code, and we'll send a link to your email. Show the QR code (or a screenshot of it) at the door — every guest gets their own code, even at a table.</p>
         </details>
         <details>
-          <summary>Who is behind TASTE?</summary>
-          <p>TASTE is created and produced by Fawnia Mondey and presented by Fitness Temple, a Las Vegas studio dedicated to pole fitness, aerial arts and movement.</p>
-        </details>
-        <details>
           <summary>What's the difference between GA, VIP and a table?</summary>
           <p>General Admission gets you in with open seating. VIP puts you in premium seats close to the stage. A table reserves a spot for your whole group — each guest gets their own ticket, so friends can arrive separately.</p>
         </details>
@@ -153,27 +223,56 @@
           <summary>I lost my tickets.</summary>
           <p>Open the link in your confirmation email to see them again. No email? Come to the door with your ID — we can find you on the guest list by name.</p>
         </details>
+        <details>
+          <summary>Who is behind TASTE?</summary>
+          <p>TASTE is created and produced by Fawnia Mondey and presented by Fitness Temple, a Las Vegas studio dedicated to pole fitness, aerial arts and movement.</p>
+        </details>
       </div>
     </section>
 
     <!-- FINAL CTA -->
     <section class="cta">
-      <div class="wrap">
-        <h2>Ready for a little <em>taste</em>?</h2>
-        <a class="btn" href="#dates">Get Your Tickets</a>
+      <div class="cta__bg" aria-hidden="true"><div class="grid-floor"></div></div>
+      <div class="container cta__inner">
+        <p class="eyebrow eyebrow--center">// One night only</p>
+        <h2>Get a little <span class="neon">taste</span></h2>
+        <p class="lead">Seats are limited and tables go first. Grab yours before they're gone.</p>
+        <a class="btn btn--primary btn--lg" href="#dates">Get Your Tickets</a>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="wrap">
-      <p class="footer__logo">TASTE</p>
-      <p>TASTE the Show by Fawnia Mondey · Presented by Fitness Temple · Las Vegas, NV</p>
-      <p class="fine">&copy; <span id="year">2026</span> TASTE the Show. All rights reserved.</p>
+    <div class="container footer__grid">
+      <div>
+        <img class="footer__logo" src="assets/img/logo.png" alt="TASTE The Show" width="1298" height="698" loading="lazy">
+        <p class="muted">Pole · Burlesque · Variety<br>Gipsy Nightclub · Las Vegas, NV</p>
+      </div>
+      <div>
+        <h4>Show</h4>
+        <a href="#about">The Show</a>
+        <a href="#night">The Night</a>
+        <a href="#venue">Venue</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div>
+        <h4>Tickets</h4>
+        <a href="#dates">Upcoming Shows</a>
+        <a href="#faq">Lost Tickets</a>
+        <a href="#dates" class="btn btn--small">Get Tickets</a>
+      </div>
+      <div>
+        <h4>Produced by</h4>
+        <p class="muted">Fawnia Mondey<br>Presented by Fitness Temple</p>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <p>&copy; <span id="year">2026</span> TASTE the Show. All rights reserved.</p>
+      <p>Website built by <a href="https://thecreatorie.com" target="_blank" rel="noopener">The Creatorie</a></p>
     </div>
   </footer>
 
-  <a href="#dates" class="sticky-buy btn" id="sticky-buy">Get Tickets</a>
+  <a href="#dates" class="sticky-buy btn btn--primary" id="sticky-buy">Get Tickets</a>
 
   <div class="modal" id="pay-modal" hidden>
     <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="pay-title">
