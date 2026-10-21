@@ -410,8 +410,8 @@ summary::after { content: "+"; color: var(--magenta); font: 400 2rem/1 var(--bod
 details[open] summary::after { transform: rotate(45deg); }
 details p { padding-bottom: 22px; margin: 0; color: var(--silver); }
 
-/* ── Family / partners ───────────────────────────────────────── */
-.family { background: radial-gradient(ellipse at 100% 100%, rgba(138, 43, 255, .18), transparent 55%), var(--ink); }
+/* ── Friends of TASTE / partners ───────────────────────────────────────── */
+.friends { background: radial-gradient(ellipse at 100% 100%, rgba(138, 43, 255, .18), transparent 55%), var(--ink); }
 .partners { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 36px; }
 .partner {
   display: flex; flex-direction: column; gap: 8px; padding: 26px 24px; text-decoration: none; color: var(--white);
