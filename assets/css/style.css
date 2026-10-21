@@ -210,7 +210,7 @@ p { margin: 0 0 1em; }
 .hero__bg { position: absolute; inset: 0; pointer-events: none; }
 .hero__inner {
   position: relative; z-index: 1;
-  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); align-items: center;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center;
   gap: clamp(28px, 5vw, 72px);
 }
 .hero__logo { margin: 0 0 .1em; }
@@ -239,8 +239,8 @@ p { margin: 0 0 1em; }
 @keyframes pulse { 50% { opacity: .3; } }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
 
-.hero__visual { margin: 0; padding: 10px; justify-self: center; width: min(100%, 440px); box-shadow: var(--glow-lg); }
-.hero__visual img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: center; border-radius: 3px; filter: saturate(1.1) contrast(1.05); }
+.hero__visual { margin: 0; padding: 10px; justify-self: center; width: min(100%, 640px); box-shadow: var(--glow-lg); }
+.hero__visual img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 40% center; border-radius: 3px; filter: saturate(1.1) contrast(1.05); }
 .hero__visual::selection { background: none; }
 .hero__visual figcaption {
   display: flex; align-items: center; gap: 8px; padding: 12px 4px 2px;
@@ -476,7 +476,8 @@ details p { padding-bottom: 22px; margin: 0; color: var(--silver); }
 @media (max-width: 960px) {
   .hero__inner, .about__grid, .venue__grid { grid-template-columns: 1fr; }
   .hero { padding-top: 104px; min-height: 0; }
-  .hero__visual { width: min(100%, 380px); }
+  .hero__visual { width: 100%; }
+  .hero__visual img { aspect-ratio: 16 / 9; object-position: center; }
   .timeline { grid-template-columns: 1fr 1fr; row-gap: 40px; }
   .footer__grid { grid-template-columns: 1fr 1fr; }
 }
