@@ -5,23 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>Your Tickets — TASTE The Show</title>
-  <meta name="theme-color" content="#0b0b0c">
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#07020d">
+  <link rel="icon" href="assets/img/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700;1,900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
     .tix-head { text-align: center; margin-bottom: 28px; }
-    .tix-head h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); margin-bottom: .2em; }
+    .tix-head h1 { font-size: clamp(2.6rem, 7vw, 4rem); margin-bottom: .2em; }
     .tix-meta { color: var(--white); font-size: 1.05rem; }
     .tix-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
     .tix {
       background: #fff; color: #111; border-radius: 18px; overflow: hidden;
       display: grid; text-align: center; break-inside: avoid;
     }
-    .tix__top { background: var(--black); color: var(--white); padding: 14px 16px; border-bottom: 3px dashed var(--red); }
-    .tix__brand { font: 800 1.4rem var(--serif); letter-spacing: .14em; }
+    .tix__top { background: radial-gradient(ellipse at 50% 0%, #3a0f55, var(--black) 70%); color: var(--white); padding: 14px 16px; border-bottom: 3px dashed var(--magenta); }
+    .tix__brand { height: 54px; width: auto; margin: 0 auto; filter: drop-shadow(0 0 8px rgba(255, 46, 209, .5)); }
     .tix__label { font-size: .85rem; color: var(--silver); margin-top: 2px; }
     .tix__qr { padding: 18px 18px 6px; }
     .tix__qr img, .tix__qr svg { width: 100%; max-width: 220px; height: auto; margin: 0 auto; display: block; image-rendering: pixelated; }
@@ -43,7 +43,7 @@
 </head>
 <body>
   <header class="nav">
-    <a href="./" class="nav__logo" aria-label="TASTE home">TASTE</a>
+    <a href="./" class="nav__logo" aria-label="TASTE The Show — home"><img src="assets/img/logo.png" alt="TASTE The Show" width="1298" height="698"></a>
     <a href="./#dates" class="btn btn--small">Shows</a>
   </header>
 
@@ -102,7 +102,7 @@
         '<div class="tix-grid">';
       o.tickets.forEach(function (t) {
         html += '<article class="tix">' +
-          '<div class="tix__top"><div class="tix__brand">TASTE</div><div class="tix__label">' + esc(t.label) + "</div></div>" +
+          '<div class="tix__top"><img class="tix__brand" src="assets/img/logo.png" alt="TASTE The Show"><div class="tix__label">' + esc(t.label) + "</div></div>" +
           '<div class="tix__qr">' + qrSvg(t.code) + "</div>" +
           '<div class="tix__code">' + esc(t.code) + "</div>" +
           '<div class="tix__name">' + esc(o.buyer_name) + "</div>" +
