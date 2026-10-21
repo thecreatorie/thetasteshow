@@ -390,6 +390,14 @@ summary::after { content: "+"; color: var(--magenta); font: 400 2rem/1 var(--bod
 details[open] summary::after { transform: rotate(45deg); }
 details p { padding-bottom: 22px; margin: 0; color: var(--silver); }
 
+/* ── Socials ──────────────────────────────────────────────────── */
+.socials { background: radial-gradient(ellipse at 50% 100%, rgba(255, 46, 209, .16), transparent 60%), var(--black); }
+.socials__lead { margin: 0 auto 2rem; }
+.socials__lead strong { color: var(--pink); }
+.btn svg { flex-shrink: 0; }
+.social-link { display: inline-flex !important; align-items: center; gap: 8px; }
+.footer__credit { margin-top: 14px; font-size: .9rem; }
+
 /* ── Final CTA ───────────────────────────────────────────────── */
 .cta {
   position: relative; overflow: hidden; text-align: center;
