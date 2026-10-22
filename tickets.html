@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700;1,900&family=Space+Grotesk:wght@400;500;700&family=Yellowtail&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=3">
   <style>
     .tix-head { text-align: center; margin-bottom: 28px; }
     .tix-head h1 { font-size: clamp(2.6rem, 7vw, 4rem); margin-bottom: .2em; }
@@ -21,7 +21,7 @@
       display: grid; text-align: center; break-inside: avoid;
     }
     .tix__top { background: radial-gradient(ellipse at 50% 0%, #3a0f55, var(--black) 70%); color: var(--white); padding: 14px 16px; border-bottom: 3px dashed var(--magenta); }
-    .tix__brand { height: 54px; width: auto; margin: 0 auto; filter: drop-shadow(0 0 8px rgba(255, 46, 209, .5)); }
+    .tix__brand { height: 60px; width: auto; margin: 0 auto; }
     .tix__label { font-size: .85rem; color: var(--silver); margin-top: 2px; }
     .tix__qr { padding: 18px 18px 6px; }
     .tix__qr img, .tix__qr svg { width: 100%; max-width: 220px; height: auto; margin: 0 auto; display: block; image-rendering: pixelated; }
@@ -43,7 +43,7 @@
 </head>
 <body>
   <header class="nav">
-    <a href="./" class="nav__logo" aria-label="TASTE The Show — home"><img src="assets/img/logo.png" alt="TASTE The Show" width="1298" height="698"></a>
+    <a href="./" class="nav__logo" aria-label="TASTE The Show — home"><img src="assets/img/logo-glow-sm.png?v=3" alt="TASTE The Show" width="689" height="389"></a>
     <a href="./#dates" class="btn btn--small">Shows</a>
   </header>
 
@@ -54,8 +54,8 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/api.js"></script>
+  <script src="assets/js/config.js?v=3"></script>
+  <script src="assets/js/api.js?v=3"></script>
   <script>
   (function () {
     var F = TasteFmt, esc = TasteEsc, app = document.getElementById("app");
@@ -102,7 +102,7 @@
         '<div class="tix-grid">';
       o.tickets.forEach(function (t) {
         html += '<article class="tix">' +
-          '<div class="tix__top"><img class="tix__brand" src="assets/img/logo.png" alt="TASTE The Show"><div class="tix__label">' + esc(t.label) + "</div></div>" +
+          '<div class="tix__top"><img class="tix__brand" src="assets/img/logo-glow-sm.png?v=3" alt="TASTE The Show"><div class="tix__label">' + esc(t.label) + "</div></div>" +
           '<div class="tix__qr">' + qrSvg(t.code) + "</div>" +
           '<div class="tix__code">' + esc(t.code) + "</div>" +
           '<div class="tix__name">' + esc(o.buyer_name) + "</div>" +

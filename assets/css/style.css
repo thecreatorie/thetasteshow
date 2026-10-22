@@ -167,7 +167,7 @@ p { margin: 0 0 1em; }
   border-bottom-color: var(--line);
 }
 .nav__logo { display: block; color: var(--white); text-decoration: none; font: italic 900 1.8rem/1 var(--display); letter-spacing: .04em; }
-.nav__logo img { height: 46px; width: auto; filter: drop-shadow(0 0 8px rgba(255, 46, 209, .45)); }
+.nav__logo img { height: 52px; width: auto; }
 .nav__links { display: flex; gap: 30px; }
 .nav__links a {
   color: var(--silver); text-decoration: none;
@@ -231,11 +231,7 @@ p { margin: 0 0 1em; }
   gap: clamp(28px, 5vw, 72px);
 }
 .hero__logo { margin: 0 0 .1em; }
-.hero__logo img {
-  width: min(100%, 620px); height: auto;
-  filter: drop-shadow(0 0 18px rgba(255, 46, 209, .55)) drop-shadow(0 0 48px rgba(138, 43, 255, .35));
-  animation: flicker 6s infinite;
-}
+.hero__logo img { width: min(100%, 660px); height: auto; margin-left: -2.5%; }
 @keyframes flicker {
   0%, 92%, 100% { opacity: 1; }
   93% { opacity: .55; } 94% { opacity: 1; } 96% { opacity: .7; } 97% { opacity: 1; }
@@ -474,7 +470,7 @@ details p { padding-bottom: 22px; margin: 0; color: var(--silver); }
 /* ── Footer ──────────────────────────────────────────────────── */
 .footer { border-top: 1px solid var(--line); padding: 64px 0 100px; background: var(--black); }
 .footer__grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.2fr 1fr; gap: 28px; }
-.footer__logo { width: 180px; height: auto; margin-bottom: 14px; filter: drop-shadow(0 0 10px rgba(255, 46, 209, .4)); }
+.footer__logo { width: 200px; height: auto; margin-bottom: 14px; }
 .footer h4 { color: #fff3d6; margin-bottom: 14px; font: 400 1.7rem/1.2 var(--script); text-transform: none; letter-spacing: 0; text-shadow: 0 0 6px var(--gold), 0 0 14px rgba(255, 171, 46, .6); }
 .footer__grid a:not(.btn) { display: block; color: var(--silver); text-decoration: none; margin-bottom: 8px; }
 .footer__grid a:not(.btn):hover { color: var(--white); }
@@ -521,7 +517,7 @@ details p { padding-bottom: 22px; margin: 0; color: var(--silver); }
 }
 @media (max-width: 860px) {
   .nav__toggle { display: flex; }
-  .nav__logo img { height: 38px; }
+  .nav__logo img { height: 44px; }
   .nav__links {
     display: none; position: absolute; top: 100%; left: 0; right: 0;
     flex-direction: column; gap: 0; padding: 8px 20px 20px;
