@@ -250,7 +250,8 @@
         "<td>" + (g.voided ? '<span class="pill pill--bad">Void</span>' : g.checked_in_at ? '<span class="pill pill--ok">In ' + F.time(g.checked_in_at) + "</span>" : '<span class="pill">Not yet</span>') + "</td>" +
         '<td class="nowrap">' +
         (g.voided ? "" : '<button class="link-btn" data-act="in">' + (g.checked_in_at ? "Undo" : "Check in") + "</button>") +
-        '<button class="link-btn" data-act="void">' + (g.voided ? "Restore" : "Void") + "</button></td>";
+        '<button class="link-btn" data-act="void">' + (g.voided ? "Restore" : "Void") + "</button>" +
+        (g.voided || contact(g.order.buyer_email) === "—" ? "" : '<button class="link-btn" data-act="email" title="Re-send the whole order\'s tickets to ' + esc(g.order.buyer_email) + '">Email</button>') + "</td>";
       var inBtn = tr.querySelector('[data-act="in"]');
       if (inBtn) inBtn.addEventListener("click", function () {
         staff({ action: "checkin", code: g.code, undo: !!g.checked_in_at }).then(function (r) {
@@ -261,6 +262,13 @@
       tr.querySelector('[data-act="void"]').addEventListener("click", function () {
         if (!g.voided && !confirm("Void ticket " + g.code + " for " + g.holder_name + "? It will no longer get in at the door.")) return;
         staff({ action: "void", ticket_id: g.id, voided: !g.voided }).then(function () { toast(g.voided ? "Ticket restored" : "Ticket voided"); loadGuests(); });
+      });
+      var emailBtn = tr.querySelector('[data-act="email"]');
+      if (emailBtn) emailBtn.addEventListener("click", function () {
+        if (!confirm("Re-send the tickets email for this order to " + g.order.buyer_email + "?")) return;
+        staff({ action: "resend-email", order_id: g.order.id }).then(function (r) {
+          toast(r.sent ? "Tickets emailed to " + g.order.buyer_email : "Email failed: " + (r.error || "unknown error"));
+        }).catch(function (e) { toast(e.message); });
       });
       body.appendChild(tr);
     });
@@ -352,7 +360,10 @@
       items: [{ ticket_type_id: f.ticket_type_id.value, quantity: Number(f.quantity.value) }],
     }).then(function (r) {
       $("comp-result").innerHTML = '<div class="card" style="margin:0"><strong>Done!</strong> Send this link to ' + esc(f.name.value) +
-        ':<br><a href="' + r.link + '" target="_blank" rel="noopener">' + esc(r.link) + "</a></div>";
+        ':<br><a href="' + r.link + '" target="_blank" rel="noopener">' + esc(r.link) + "</a>" +
+        (r.email && r.email.sent ? '<p class="fine" style="margin:8px 0 0">✅ Tickets emailed to ' + esc(f.email.value) + ".</p>" :
+          r.email && r.email.error ? '<p class="form-error" style="margin:8px 0 0">⚠️ Email not sent: ' + esc(r.email.error) + "</p>" : "") +
+        "</div>";
       f.name.value = ""; f.email.value = ""; f.note.value = ""; f.quantity.value = 1;
       return loadShows().then(fillCompTypes);
     }).catch(function (e) { fail($("comp-error"), e); });

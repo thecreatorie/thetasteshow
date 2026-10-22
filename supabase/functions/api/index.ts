@@ -4,6 +4,7 @@
 //   GET  /status          public  — is online ticket sales switched on?
 //   POST /checkout        public  — reserve seats + start a Stripe embedded checkout
 //   GET  /order?id=...    public  — order status + tickets (the order id is the secret link)
+//   GET  /ticket?id=...   public  — a single ticket (the share-with-a-friend link)
 //   POST /stripe-webhook  Stripe  — confirms payments even if the buyer closes the tab
 //   POST /staff           staff   — dashboard, guest list, door check-in, comps, settings
 //
@@ -11,9 +12,10 @@
 //   STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY   required to sell tickets
 //   STRIPE_WEBHOOK_SECRET                       recommended
 //   SITE_URL                                    optional (defaults to the GitHub Pages URL)
-//   RESEND_API_KEY, EMAIL_FROM                  optional — email tickets to buyers
+//   RESEND_API_KEY, EMAIL_FROM                  optional — email tickets (with QR codes) to buyers
 
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
+import QRCode from "npm:qrcode@1.5.4";
 
 const env = (k: string, d = "") => Deno.env.get(k) ?? d;
 const db = createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY"), {
@@ -117,7 +119,7 @@ async function loadOrder(id: string) {
     .select(`id, status, buyer_name, buyer_email, amount_cents, stripe_session_id, emailed_at, created_at, paid_at,
              show:shows(id, title, starts_at, doors_at, ends_at, venue, address),
              items:order_items(quantity, unit_price_cents, ticket_type:ticket_types(name)),
-             tickets(code, label, checked_in_at, voided, ticket_type:ticket_types(name, sort))`)
+             tickets(id, code, label, checked_in_at, voided, ticket_type:ticket_types(name, sort))`)
     .eq("id", id)
     .maybeSingle();
   if (error) throw error;
@@ -144,37 +146,197 @@ async function syncWithStripe(order: { id: string; status: string; stripe_sessio
   return false;
 }
 
-async function emailTickets(orderId: string) {
+// ── Ticket email (neon Vegas branding, QR codes embedded inline) ──────────
+
+type EmailResult = { sent: boolean; error?: string };
+
+// Logo for the email header, fetched from the site (glow version first, plain logo as fallback).
+let cachedLogo: string | null = null;
+async function logoBase64(): Promise<string | null> {
+  if (cachedLogo) return cachedLogo;
+  for (const name of ["logo-glow-sm.png", "logo.png"]) {
+    try {
+      const res = await fetch(`${SITE_URL}/assets/img/${name}`);
+      if (!res.ok) continue;
+      const bytes = new Uint8Array(await res.arrayBuffer());
+      let bin = "";
+      for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+      const b64 = btoa(bin);
+      if (name === "logo-glow-sm.png") cachedLogo = b64;
+      return b64;
+    } catch (_) { /* try the next one */ }
+  }
+  return null;
+}
+
+async function qrPngBase64(text: string) {
+  const buf: Uint8Array = await QRCode.toBuffer(text, { type: "png", width: 360, margin: 2, errorCorrectionLevel: "M" });
+  let bin = "";
+  for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode(...buf.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+
+function fmtLong(iso: string, opts: Intl.DateTimeFormatOptions) {
+  return new Date(iso).toLocaleString("en-US", { timeZone: TZ, ...opts });
+}
+
+function ticketEmailHtml(order: { id: string; buyer_name: string }, show: { title: string; starts_at: string; doors_at: string | null; venue: string; address: string },
+  tickets: { id: string; code: string; label: string }[]) {
+  const first = escapeHtml(order.buyer_name.split(" ")[0] || order.buyer_name);
+  const link = `${SITE_URL}/tickets.html?order=${order.id}`;
+  const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(show.venue + " " + show.address)}`;
+  const date = fmtLong(show.starts_at, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  const showTime = fmtLong(show.starts_at, { hour: "numeric", minute: "2-digit" });
+  const doors = show.doors_at ? fmtLong(show.doors_at, { hour: "numeric", minute: "2-digit" }) : "";
+  const pink = "#ff2ed1", gold = "#ffd36b", ink = "#07020d", panel = "#170a22", muted = "#b9a6cf";
+  const display = "'Barlow Condensed','Arial Narrow',Impact,'Helvetica Neue',Arial,sans-serif";
+  const body = "'Space Grotesk','Helvetica Neue',Arial,sans-serif";
+  const script = "'Yellowtail','Brush Script MT','Snell Roundhand',Georgia,cursive";
+  const bulbs = `<div style="height:10px;line-height:10px;font-size:0;background:${ink};background-image:radial-gradient(circle,${gold} 0 3px,transparent 4px);background-size:18px 10px;background-repeat:repeat-x;background-position:center">&nbsp;</div>`;
+
+  const cards = tickets.map((t, i) => `
+          <tr><td style="padding:0 0 18px">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;border:2px solid ${pink};border-radius:16px;background:${panel}">
+              <tr><td align="center" style="padding:14px 16px 10px;border-bottom:2px dashed rgba(255,46,209,.55)">
+                <div style="font:italic 900 22px/1 ${display};letter-spacing:2px;color:#ffffff;text-transform:uppercase">TASTE</div>
+                <div style="font:600 12px/1.4 ${body};letter-spacing:3px;color:${gold};text-transform:uppercase;padding-top:6px">${escapeHtml(t.label)}</div>
+              </td></tr>
+              <tr><td align="center" style="padding:18px 16px 8px">
+                <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:#ffffff;border-radius:12px;padding:10px">
+                  <img src="cid:qr-${i}" width="200" height="200" alt="QR code ${t.code}" style="display:block;width:200px;height:200px;border:0">
+                </td></tr></table>
+              </td></tr>
+              <tr><td align="center" style="padding:6px 16px 18px">
+                <div style="font:700 20px/1 'Courier New',Courier,monospace;letter-spacing:3px;color:#ffffff">${t.code}</div>
+                <div style="font:400 13px/1.4 ${body};color:${muted};padding-top:6px">Ticket ${i + 1} of ${tickets.length} · ${escapeHtml(order.buyer_name)}</div>
+                ${tickets.length > 1 ? `<div style="padding-top:12px"><a href="${SITE_URL}/tickets.html?t=${t.id}" style="font:600 13px/1 ${body};color:${gold};text-decoration:underline">Send this ticket to a friend →</a></div>` : ""}
+              </td></tr>
+            </table>
+          </td></tr>`).join("");
+
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,900&family=Space+Grotesk:wght@400;600;700&family=Yellowtail&display=swap" rel="stylesheet">
+<title>Your TASTE tickets</title></head>
+<body style="margin:0;padding:0;background:${ink};-webkit-text-size-adjust:100%">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0">You're in! ${tickets.length} ticket${tickets.length === 1 ? "" : "s"} for ${date} at ${escapeHtml(show.venue)}. Your QR codes are inside.</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${ink}">
+  <tr><td align="center" style="padding:24px 12px">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:${ink};border-radius:22px;border:2px solid #4a1640">
+      <tr><td style="border-radius:20px 20px 0 0;overflow:hidden">${bulbs}</td></tr>
+      <tr><td align="center" style="padding:26px 24px 6px;background:${ink};background-image:radial-gradient(ellipse at 50% 0%,#4a0f3d 0%,${ink} 70%)">
+        <img src="cid:taste-logo" width="260" alt="TASTE The Show" style="display:block;width:260px;max-width:80%;height:auto;border:0;margin:0 auto">
+      </td></tr>
+      <tr><td align="center" style="padding:10px 28px 0">
+        <div style="font:400 34px/1.1 ${script};color:#fff3d6;text-shadow:0 0 8px ${gold},0 0 18px #ffab2e">You're in, ${first}!</div>
+        <div style="font:400 16px/1.6 ${body};color:${muted};padding-top:10px">Your tickets for <strong style="color:#ffffff">${escapeHtml(show.title)}</strong> are confirmed. Get ready for a night of pole, burlesque and pure entertainment.</div>
+      </td></tr>
+      <tr><td style="padding:24px 24px 6px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;background:${panel};border:1px solid rgba(255,211,107,.45);border-radius:16px">
+          <tr><td style="padding:18px 20px">
+            <div style="font:italic 900 30px/1.05 ${display};color:#ffffff;text-transform:uppercase;letter-spacing:.5px;text-shadow:0 0 10px ${pink}">${date}</div>
+            <div style="font:600 15px/1.6 ${body};color:${gold};padding-top:8px">${doors ? `Doors ${doors} &nbsp;·&nbsp; ` : ""}Show ${showTime}</div>
+            <div style="font:400 15px/1.6 ${body};color:#ffffff;padding-top:4px">${escapeHtml(show.venue)}<br><span style="color:${muted}">${escapeHtml(show.address)}</span></div>
+            <div style="padding-top:10px"><a href="${maps}" style="font:600 13px/1 ${body};color:${pink};text-decoration:underline">Get directions →</a></div>
+          </td></tr>
+        </table>
+      </td></tr>
+      <tr><td align="center" style="padding:22px 24px 8px">
+        <a href="${link}" style="display:inline-block;background:${pink};background-image:linear-gradient(180deg,#ff5fdc,#e60fb4);border:2px solid #ffb3f0;border-radius:999px;padding:15px 30px;font:700 14px/1 ${body};letter-spacing:2px;text-transform:uppercase;color:#ffffff;text-decoration:none">View tickets online</a>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 24px 6px">
+        <div style="font:400 28px/1.1 ${script};color:#fff3d6;text-shadow:0 0 8px ${gold}">Your tickets</div>
+        <div style="font:400 14px/1.6 ${body};color:${muted};padding-top:6px">One QR code per guest. Each code gets one person in, once.${tickets.length > 1 ? " Friends arriving separately? Send each of them their own ticket." : ""}</div>
+      </td></tr>
+      <tr><td style="padding:14px 24px 4px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${cards}
+        </table>
+      </td></tr>
+      <tr><td style="padding:4px 24px 22px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;border:1px dashed rgba(255,211,107,.5);border-radius:14px">
+          <tr><td style="padding:16px 18px;font:400 14px/1.7 ${body};color:#ffffff">
+            <span style="color:${gold};font-weight:700">★ Good to know</span><br>
+            Show your QR code (or a screenshot) at the door.<br>
+            Doors open ${doors || "one hour before showtime"} — come early, grab a drink, settle in.<br>
+            Bring your tipping money — we'll make change for you!
+          </td></tr>
+        </table>
+      </td></tr>
+      <tr><td>${bulbs}</td></tr>
+      <tr><td align="center" style="padding:18px 24px 26px;font:400 12px/1.7 ${body};color:${muted}">
+        TASTE The Show · Created &amp; produced by Fawnia Mondey<br>
+        ${escapeHtml(show.venue)} · ${escapeHtml(show.address)}<br>
+        <a href="https://www.instagram.com/tastetheshow/" style="color:${pink};text-decoration:none">@tastetheshow</a> &nbsp;·&nbsp; <a href="${SITE_URL}/" style="color:${pink};text-decoration:none">${SITE_URL.replace(/^https?:\/\//, "")}</a>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body></html>`;
+}
+
+function ticketEmailText(order: { id: string; buyer_name: string }, show: { title: string; starts_at: string; doors_at: string | null; venue: string; address: string }, tickets: { id: string; code: string; label: string }[]) {
+  const lines = tickets.map((t, i) => `  ${i + 1}. ${t.label}: ${t.code}${tickets.length > 1 ? `\n     Send to a friend: ${SITE_URL}/tickets.html?t=${t.id}` : ""}`).join("\n");
+  return `You're in, ${order.buyer_name.split(" ")[0]}!
+
+${show.title}
+${fmtLong(show.starts_at, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}
+${show.doors_at ? `Doors ${fmtLong(show.doors_at, { hour: "numeric", minute: "2-digit" })} · ` : ""}Show ${fmtLong(show.starts_at, { hour: "numeric", minute: "2-digit" })}
+${show.venue} · ${show.address}
+
+Your tickets (one code per guest, each admits one person once):
+${lines}
+
+View your tickets & QR codes: ${SITE_URL}/tickets.html?order=${order.id}
+
+Bring your tipping money — we'll make change for you!
+TASTE The Show · @tastetheshow`;
+}
+
+async function emailTickets(orderId: string, opts: { force?: boolean } = {}): Promise<EmailResult> {
   const apiKey = env("RESEND_API_KEY");
   const from = env("EMAIL_FROM");
-  if (!apiKey || !from) return;
+  if (!apiKey || !from) return { sent: false, error: "Email isn't set up yet." };
   // Claim the send first so a webhook and a page load can't both email.
-  const { data: claimed } = await db.from("orders").update({ emailed_at: new Date().toISOString() })
-    .eq("id", orderId).is("emailed_at", null).in("status", ["paid", "comp"]).select("id");
-  if (!claimed?.length) return;
+  let q = db.from("orders").update({ emailed_at: new Date().toISOString() }).eq("id", orderId).in("status", ["paid", "comp"]);
+  if (!opts.force) q = q.is("emailed_at", null);
+  const { data: claimed } = await q.select("id");
+  if (!claimed?.length) return { sent: false, error: "Already emailed." };
   const order = await loadOrder(orderId);
-  if (!order) return;
-  const show = order.show as unknown as { title: string; starts_at: string; venue: string; address: string };
-  const link = `${SITE_URL}/tickets.html?order=${order.id}`;
-  const rows = (order.tickets as { code: string; label: string }[])
-    .map((t) => `<tr><td style="padding:6px 12px 6px 0">${escapeHtml(t.label)}</td><td style="padding:6px 0;font-family:monospace;font-size:16px"><b>${t.code}</b></td></tr>`)
-    .join("");
-  const html = `<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;color:#111">
-    <h1 style="font-family:Georgia,serif;letter-spacing:.1em">TASTE</h1>
-    <p>Hi ${escapeHtml(order.buyer_name)}, you're in! Here are your tickets for <b>${escapeHtml(show.title)}</b>.</p>
-    <p><b>${fmtShowDate(show.starts_at)}</b><br>${escapeHtml(show.venue)} · ${escapeHtml(show.address)}</p>
-    <p><a href="${link}" style="display:inline-block;background:#e0182d;color:#fff;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:bold">View tickets &amp; QR codes</a></p>
-    <table>${rows}</table>
-    <p style="color:#555;font-size:13px">Show your QR code (or the code above) at the door. Each code admits one person once. Bring your tipping money!</p>
-  </div>`;
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from, to: [order.buyer_email], subject: `Your TASTE tickets — ${fmtShowDate(show.starts_at)}`, html }),
-  });
-  if (!res.ok) {
-    console.error("Email failed", await res.text());
+  if (!order) return { sent: false, error: "Order not found." };
+  const show = order.show as unknown as { title: string; starts_at: string; doors_at: string | null; venue: string; address: string };
+  const tickets = (order.tickets as unknown as { id: string; code: string; label: string; voided: boolean; ticket_type: { sort: number } }[])
+    .filter((t) => !t.voided)
+    .sort((a, b) => a.ticket_type.sort - b.ticket_type.sort || a.label.localeCompare(b.label, undefined, { numeric: true }));
+  try {
+    const logo = await logoBase64();
+    const attachments = [
+      ...(logo ? [{ content: logo, filename: "taste-logo.png", content_id: "taste-logo" }] : []),
+      ...(await Promise.all(tickets.map(async (t, i) => ({ content: await qrPngBase64(t.code), filename: `${t.code}.png`, content_id: `qr-${i}` })))),
+    ];
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from, to: [order.buyer_email],
+        subject: `🎟️ Your TASTE tickets — ${fmtShowDate(show.starts_at)} · ${show.venue}`,
+        html: ticketEmailHtml(order, show, tickets),
+        text: ticketEmailText(order, show, tickets),
+        attachments,
+      }),
+    });
+    if (!res.ok) {
+      const body = await res.text();
+      console.error("Email failed", body);
+      await db.from("orders").update({ emailed_at: null }).eq("id", orderId);
+      let msg = "The email service rejected the message.";
+      try { msg = JSON.parse(body).message || msg; } catch { /* keep default */ }
+      return { sent: false, error: msg };
+    }
+    return { sent: true };
+  } catch (e) {
+    console.error("Email failed", e);
     await db.from("orders").update({ emailed_at: null }).eq("id", orderId);
+    return { sent: false, error: "Couldn't build the email." };
   }
 }
 
@@ -248,10 +410,10 @@ async function getOrder(url: URL) {
   if (await syncWithStripe(order)) order = (await loadOrder(id))!;
   if (["paid", "comp"].includes(order.status) && !order.emailed_at) await emailTickets(order.id);
 
-  const tickets = (order.tickets as unknown as { code: string; label: string; checked_in_at: string | null; voided: boolean; ticket_type: { name: string; sort: number } }[])
+  const tickets = (order.tickets as unknown as { id: string; code: string; label: string; checked_in_at: string | null; voided: boolean; ticket_type: { name: string; sort: number } }[])
     .filter((t) => !t.voided)
     .sort((a, b) => a.ticket_type.sort - b.ticket_type.sort || a.label.localeCompare(b.label, undefined, { numeric: true }))
-    .map((t) => ({ code: t.code, label: t.label, ticket_type: t.ticket_type.name, checked_in: !!t.checked_in_at }));
+    .map((t) => ({ id: t.id, code: t.code, label: t.label, ticket_type: t.ticket_type.name, checked_in: !!t.checked_in_at }));
   return json({
     id: order.id,
     status: order.status,
@@ -261,6 +423,24 @@ async function getOrder(url: URL) {
     items: (order.items as unknown as { quantity: number; unit_price_cents: number; ticket_type: { name: string } }[])
       .map((i) => ({ name: i.ticket_type.name, quantity: i.quantity, unit_price_cents: i.unit_price_cents })),
     tickets: ["paid", "comp"].includes(order.status) ? tickets : [],
+  });
+}
+
+// One ticket on its own — the link a buyer sends to a friend. The ticket id is
+// a random UUID, so it only reveals this single ticket, not the whole order.
+async function getTicket(url: URL) {
+  const id = url.searchParams.get("id") ?? "";
+  if (!UUID.test(id)) throw new HttpError(404, "Ticket not found.");
+  const { data: t, error } = await db.from("tickets")
+    .select("id, code, label, voided, checked_in_at, ticket_type:ticket_types(name), order:orders!inner(status, buyer_name), show:shows(title, starts_at, doors_at, ends_at, venue, address)")
+    .eq("id", id).maybeSingle();
+  if (error) throw error;
+  const order = t?.order as unknown as { status: string; buyer_name: string } | undefined;
+  if (!t || !order || !["paid", "comp"].includes(order.status) || t.voided) throw new HttpError(404, "Ticket not found.");
+  return json({
+    id: t.id, code: t.code, label: t.label, checked_in: !!t.checked_in_at,
+    ticket_type: (t.ticket_type as unknown as { name: string }).name,
+    from_name: order.buyer_name, show: t.show,
   });
 }
 
@@ -406,8 +586,13 @@ async function staff(req: Request) {
         if (msg) throw new HttpError(409, msg);
         throw error;
       }
-      if (EMAIL.test(String(body.email ?? ""))) await emailTickets(orderId as string);
-      return json({ order_id: orderId, link: `${SITE_URL}/tickets.html?order=${orderId}` });
+      const emailResult = EMAIL.test(String(body.email ?? "")) ? await emailTickets(orderId as string) : null;
+      return json({ order_id: orderId, link: `${SITE_URL}/tickets.html?order=${orderId}`, email: emailResult });
+    }
+
+    case "resend-email": {
+      if (!UUID.test(String(body.order_id))) throw new HttpError(400, "Missing order.");
+      return json(await emailTickets(body.order_id, { force: true }));
     }
 
     case "void": {
@@ -440,6 +625,7 @@ Deno.serve(async (req) => {
     if (route === "status" && req.method === "GET") return json({ sales_open: !!env("STRIPE_SECRET_KEY") && !!env("STRIPE_PUBLISHABLE_KEY") });
     if (route === "checkout" && req.method === "POST") return await checkout(req);
     if (route === "order" && req.method === "GET") return await getOrder(url);
+    if (route === "ticket" && req.method === "GET") return await getTicket(url);
     if (route === "stripe-webhook" && req.method === "POST") return await stripeWebhook(req);
     if (route === "staff" && req.method === "POST") return await staff(req);
     return json({ error: "Not found" }, 404);
