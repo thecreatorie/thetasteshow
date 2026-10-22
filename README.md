@@ -2,7 +2,7 @@
 
 Website for **TASTE the Show** by Fawnia Mondey, a Las Vegas pole, burlesque and variety show at Gipsy Nightclub.
 
-- **Website:** https://thecreatorie.github.io/thetasteshow/ (hosted on GitHub Pages, deployed on every push to `main`)
+- **Website:** https://tastetheshow.com (hosted on GitHub Pages, deployed on every push to `main`)
 - **Tickets:** sold by Gipsy Nightclub. Each show on the site has General Admission, VIP and Table buttons that link to Gipsy's ticket pages.
 
 It's a static site: plain HTML, CSS and a little JavaScript, with no build step and no backend.
