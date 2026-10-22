@@ -339,7 +339,6 @@ p { margin: 0 0 1em; }
 
 /* ── Tickets ─────────────────────────────────────────────────── */
 .dates { background: radial-gradient(ellipse at 100% 0%, rgba(255, 46, 209, .14), transparent 55%), var(--black); }
-.loading { color: var(--muted); }
 .show-list { display: grid; gap: 16px; margin: 32px 0 20px; }
 .show {
   display: grid; grid-template-columns: auto 1fr auto; gap: 28px; align-items: center;
@@ -363,41 +362,20 @@ p { margin: 0 0 1em; }
 .show-empty { padding: 48px 32px; text-align: center; border: 1px dashed var(--line-strong); border-radius: var(--radius); background: var(--panel); }
 .show-empty p { max-width: 46ch; margin: 0 auto 1.5em; color: var(--muted); }
 
-.buy { margin: 8px 0 20px; padding: clamp(20px, 4vw, 36px); }
-.buy__title { font-size: 1.9rem; margin-bottom: .8em; }
-.tt-list { display: grid; gap: 12px; margin-bottom: 28px; }
-.tt {
-  display: flex; justify-content: space-between; align-items: center; gap: 20px;
-  padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(7, 2, 13, .6);
+.show { grid-template-columns: auto 1fr; }
+.tiers { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tier {
+  display: grid; gap: 4px; padding: 14px 16px; border-radius: var(--radius);
+  border: 1px solid var(--line-strong); background: rgba(7, 2, 13, .6); color: var(--white);
+  text-decoration: none; transition: border-color .2s, box-shadow .2s, transform .2s;
 }
-.tt.is-soldout { opacity: .45; }
-.tt h4 { margin: 0 0 .2em; font: italic 800 1.45rem/1 var(--display); letter-spacing: .02em; text-transform: uppercase; color: var(--white); }
-.tt__price { color: var(--pink); font: 700 1rem var(--body); letter-spacing: 0; margin-left: 10px; text-shadow: 0 0 10px rgba(255, 46, 209, .5); }
-.tt p { margin: 0; font-size: .92rem; color: var(--muted); }
-.tt .tt__left { color: var(--cyan); font-weight: 600; margin-top: 4px; }
-.stepper { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
-.stepper button {
-  width: 42px; height: 42px; border-radius: 50%;
-  border: 1px solid var(--line-strong); background: var(--panel); color: var(--white);
-  font-size: 1.3rem; line-height: 1; cursor: pointer; transition: border-color .2s, box-shadow .2s, color .2s;
-}
-.stepper button:hover:not(:disabled) { border-color: var(--magenta); color: var(--magenta); box-shadow: var(--glow-sm); }
-.stepper button:disabled { opacity: .3; cursor: not-allowed; }
-.stepper output { min-width: 34px; text-align: center; font: italic 900 1.6rem var(--display); color: var(--white); }
-
-label { display: grid; gap: 6px; font: 500 .72rem/1.2 var(--body); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
-label .opt { text-transform: none; letter-spacing: 0; font-weight: 400; }
-input, select, textarea {
-  width: 100%; padding: 13px 14px; border-radius: var(--radius);
-  border: 1px solid var(--line-strong); background: rgba(7, 2, 13, .8); color: var(--white);
-  font: 400 1rem var(--body); letter-spacing: 0; text-transform: none;
-}
-input:focus, select:focus, textarea:focus { outline: none; border-color: var(--magenta); box-shadow: 0 0 0 3px rgba(255, 46, 209, .25); }
-.buy__fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
-.buy__footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
-.buy__total { margin: 0; font-size: 1rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-.buy__total strong { font: italic 900 2.4rem var(--display); color: var(--white); margin-left: 10px; letter-spacing: 0; text-shadow: 0 0 16px rgba(255, 46, 209, .5); }
-.form-error { color: #ff8fc8; font-weight: 600; margin: 0 0 12px; }
+.tier__name { font: italic 800 1.35rem/1 var(--display); letter-spacing: .02em; text-transform: uppercase; }
+.tier__note { font-size: .85rem; color: var(--muted); }
+.tier__cta { margin-top: 6px; font: 600 .72rem/1 var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--pink); }
+a.tier:not(.is-soon):hover { color: var(--white); border-color: var(--magenta); box-shadow: var(--glow-sm); transform: translateY(-2px); }
+a.tier:not(.is-soon):hover .tier__cta { color: var(--white); text-shadow: 0 0 10px var(--magenta); }
+.tier.is-soon { cursor: default; opacity: .6; }
+.tier.is-soon .tier__cta { color: var(--muted); }
 
 /* ── Venue ───────────────────────────────────────────────────── */
 .venue { background: var(--ink); }
@@ -486,25 +464,6 @@ details p { padding-bottom: 22px; margin: 0; color: var(--silver); }
 .sticky-buy.is-visible { transform: translate(-50%, 0); }
 .sticky-buy:hover { transform: translate(-50%, -2px); }
 
-/* ── Payment modal ───────────────────────────────────────────── */
-.modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; background: rgba(7, 2, 13, .85); backdrop-filter: blur(6px); }
-.modal__box { width: min(560px, 100%); max-height: calc(100vh - 32px); overflow: auto; background: #fff; color: #111; border-radius: 12px; padding: 18px 18px 8px; box-shadow: var(--glow-lg); }
-.modal__head { display: flex; justify-content: space-between; align-items: center; }
-.modal__head h3 { color: #111; margin: 0; font-style: italic; }
-.modal__box .fine { color: #666; margin: 4px 0 12px; }
-.modal__close { border: 0; background: none; font-size: 2rem; line-height: 1; cursor: pointer; color: #111; }
-.no-scroll { overflow: hidden; }
-
-/* ── Utility pages (tickets, door, admin) ────────────────────── */
-.page { min-height: 100vh; padding: 104px 0 64px; background: radial-gradient(ellipse at 50% -10%, rgba(138, 43, 255, .25), transparent 60%), var(--black); }
-.card { background: linear-gradient(180deg, rgba(27, 15, 48, .8), rgba(13, 6, 24, .95)); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(20px, 4vw, 32px); margin-bottom: 20px; }
-.row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-.spacer { flex: 1; }
-.pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font: 600 .68rem/1.2 var(--body); letter-spacing: .1em; text-transform: uppercase; background: rgba(255, 255, 255, .08); color: var(--silver); }
-.pill--ok { background: rgba(46, 230, 140, .16); color: #5cf0a6; }
-.pill--warn { background: rgba(255, 200, 60, .16); color: #ffd56b; }
-.pill--bad { background: rgba(255, 46, 209, .2); color: var(--pink); }
-
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 960px) {
   .hero__inner, .about__grid, .venue__grid { grid-template-columns: 1fr; }
@@ -526,11 +485,8 @@ details p { padding-bottom: 22px; margin: 0; color: var(--silver); }
   .nav.is-open .nav__links { display: flex; }
   .nav__links a { padding: 18px 4px; font-size: .9rem; border-bottom: 1px solid var(--line); }
   .nav__links a:last-child { border-bottom: 0; }
-  .buy__fields { grid-template-columns: 1fr; }
-  .tt { flex-direction: column; align-items: flex-start; }
-  .buy__footer .btn { width: 100%; }
   .show { grid-template-columns: auto 1fr; gap: 18px 20px; padding: 20px; }
-  .show .btn { grid-column: 1 / -1; }
+  .tiers { grid-template-columns: 1fr; }
   .sticky-buy { display: inline-flex; }
 }
 @media (max-width: 560px) {

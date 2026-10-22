@@ -18,7 +18,119 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,700;1,900&family=Space+Grotesk:wght@400;500;700&family=Yellowtail&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=3">
+  <link rel="stylesheet" href="assets/css/style.css?v=4">
+  <script type="application/ld+json">
+[
+ {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "TASTE The Show",
+  "startDate": "2027-01-20T20:00:00-08:00",
+  "endDate": "2027-01-20T21:30:00-08:00",
+  "doorTime": "2027-01-20T19:00:00-08:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Pole artistry, burlesque, contortion, acrobatics and live variety, created and produced by Fawnia Mondey.",
+  "image": [
+   "https://thecreatorie.github.io/thetasteshow/assets/img/og.jpg"
+  ],
+  "location": {
+   "@type": "Place",
+   "name": "Gipsy Nightclub",
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "4605 Paradise Rd",
+    "addressLocality": "Las Vegas",
+    "addressRegion": "NV",
+    "postalCode": "89169",
+    "addressCountry": "US"
+   }
+  },
+  "organizer": {
+   "@type": "Person",
+   "name": "Fawnia Mondey",
+   "url": "https://www.officiallyfawnia.com"
+  },
+  "performer": {
+   "@type": "PerformingGroup",
+   "name": "TASTE The Show"
+  },
+  "url": "https://thecreatorie.github.io/thetasteshow/#dates"
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "TASTE The Show",
+  "startDate": "2027-05-19T20:00:00-07:00",
+  "endDate": "2027-05-19T21:30:00-07:00",
+  "doorTime": "2027-05-19T19:00:00-07:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Pole artistry, burlesque, contortion, acrobatics and live variety, created and produced by Fawnia Mondey.",
+  "image": [
+   "https://thecreatorie.github.io/thetasteshow/assets/img/og.jpg"
+  ],
+  "location": {
+   "@type": "Place",
+   "name": "Gipsy Nightclub",
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "4605 Paradise Rd",
+    "addressLocality": "Las Vegas",
+    "addressRegion": "NV",
+    "postalCode": "89169",
+    "addressCountry": "US"
+   }
+  },
+  "organizer": {
+   "@type": "Person",
+   "name": "Fawnia Mondey",
+   "url": "https://www.officiallyfawnia.com"
+  },
+  "performer": {
+   "@type": "PerformingGroup",
+   "name": "TASTE The Show"
+  },
+  "url": "https://thecreatorie.github.io/thetasteshow/#dates"
+ },
+ {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "TASTE The Show",
+  "startDate": "2027-09-15T20:00:00-07:00",
+  "endDate": "2027-09-15T21:30:00-07:00",
+  "doorTime": "2027-09-15T19:00:00-07:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "description": "Pole artistry, burlesque, contortion, acrobatics and live variety, created and produced by Fawnia Mondey.",
+  "image": [
+   "https://thecreatorie.github.io/thetasteshow/assets/img/og.jpg"
+  ],
+  "location": {
+   "@type": "Place",
+   "name": "Gipsy Nightclub",
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "4605 Paradise Rd",
+    "addressLocality": "Las Vegas",
+    "addressRegion": "NV",
+    "postalCode": "89169",
+    "addressCountry": "US"
+   }
+  },
+  "organizer": {
+   "@type": "Person",
+   "name": "Fawnia Mondey",
+   "url": "https://www.officiallyfawnia.com"
+  },
+  "performer": {
+   "@type": "PerformingGroup",
+   "name": "TASTE The Show"
+  },
+  "url": "https://thecreatorie.github.io/thetasteshow/#dates"
+ }
+]
+  </script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -162,26 +274,51 @@
         <p class="eyebrow">Tickets</p>
         <h2>2027 <span class="neon">shows</span></h2>
         <p class="lead">Three Wednesdays. Three nights to remember. Pick yours.</p>
-        <div id="show-list" class="show-list" aria-live="polite">
-          <p class="loading">Loading shows…</p>
-          <noscript><p>Please enable JavaScript to buy tickets.</p></noscript>
+        <!-- Ticket links: tickets are sold by Gipsy Nightclub. To turn a button on, give it
+             href="<Gipsy link>" target="_blank" rel="noopener", remove class "is-soon" and
+             aria-disabled, and change "Coming soon" to "Buy". -->
+        <div class="show-list">
+          <article class="show" data-date="2027-01-20">
+            <div class="show__date"><span class="show__dow">Wed</span><span class="show__day">20</span><span class="show__mon">Jan 2027</span></div>
+            <div class="show__info">
+              <h3>TASTE The Show</h3>
+              <p class="show__venue">Gipsy Nightclub · 4605 Paradise Rd, Las Vegas, NV 89169</p>
+              <p class="show__times">Doors 7:00 PM · Show 8:00 PM – 9:30 PM</p>
+            </div>
+            <div class="tiers">
+              <a class="tier is-soon" data-tier="ga" aria-disabled="true"><span class="tier__name">General Admission</span><span class="tier__note">Open seating</span><span class="tier__cta">Coming soon</span></a>
+              <a class="tier is-soon" data-tier="vip" aria-disabled="true"><span class="tier__name">VIP</span><span class="tier__note">Premium seats by the stage</span><span class="tier__cta">Coming soon</span></a>
+              <a class="tier is-soon" data-tier="table" aria-disabled="true"><span class="tier__name">Table</span><span class="tier__note">Reserved for your group</span><span class="tier__cta">Coming soon</span></a>
+            </div>
+          </article>
+          <article class="show" data-date="2027-05-19">
+            <div class="show__date"><span class="show__dow">Wed</span><span class="show__day">19</span><span class="show__mon">May 2027</span></div>
+            <div class="show__info">
+              <h3>TASTE The Show</h3>
+              <p class="show__venue">Gipsy Nightclub · 4605 Paradise Rd, Las Vegas, NV 89169</p>
+              <p class="show__times">Doors 7:00 PM · Show 8:00 PM – 9:30 PM</p>
+            </div>
+            <div class="tiers">
+              <a class="tier is-soon" data-tier="ga" aria-disabled="true"><span class="tier__name">General Admission</span><span class="tier__note">Open seating</span><span class="tier__cta">Coming soon</span></a>
+              <a class="tier is-soon" data-tier="vip" aria-disabled="true"><span class="tier__name">VIP</span><span class="tier__note">Premium seats by the stage</span><span class="tier__cta">Coming soon</span></a>
+              <a class="tier is-soon" data-tier="table" aria-disabled="true"><span class="tier__name">Table</span><span class="tier__note">Reserved for your group</span><span class="tier__cta">Coming soon</span></a>
+            </div>
+          </article>
+          <article class="show" data-date="2027-09-15">
+            <div class="show__date"><span class="show__dow">Wed</span><span class="show__day">15</span><span class="show__mon">Sep 2027</span></div>
+            <div class="show__info">
+              <h3>TASTE The Show</h3>
+              <p class="show__venue">Gipsy Nightclub · 4605 Paradise Rd, Las Vegas, NV 89169</p>
+              <p class="show__times">Doors 7:00 PM · Show 8:00 PM – 9:30 PM</p>
+            </div>
+            <div class="tiers">
+              <a class="tier is-soon" data-tier="ga" aria-disabled="true"><span class="tier__name">General Admission</span><span class="tier__note">Open seating</span><span class="tier__cta">Coming soon</span></a>
+              <a class="tier is-soon" data-tier="vip" aria-disabled="true"><span class="tier__name">VIP</span><span class="tier__note">Premium seats by the stage</span><span class="tier__cta">Coming soon</span></a>
+              <a class="tier is-soon" data-tier="table" aria-disabled="true"><span class="tier__name">Table</span><span class="tier__note">Reserved for your group</span><span class="tier__cta">Coming soon</span></a>
+            </div>
+          </article>
         </div>
-
-        <form id="buy" class="buy frame" hidden novalidate>
-          <h3 class="buy__title" id="buy-title">Choose your tickets</h3>
-          <div id="ticket-types" class="tt-list"></div>
-          <div class="buy__fields">
-            <label>Full name<input name="name" autocomplete="name" required maxlength="120"></label>
-            <label>Email<input name="email" type="email" autocomplete="email" required maxlength="200"></label>
-            <label><span>Phone <span class="opt">(optional)</span></span><input name="phone" type="tel" autocomplete="tel" maxlength="40"></label>
-          </div>
-          <div class="buy__footer">
-            <p class="buy__total">Total <strong id="buy-total">$0</strong></p>
-            <button class="btn btn--primary" id="buy-submit" type="submit" disabled>Continue to Payment</button>
-          </div>
-          <p class="form-error" id="buy-error" role="alert" hidden></p>
-          <p class="fine">Secure card payment by Stripe. Your tickets — each with its own QR code — appear right after payment and are sent to your email.</p>
-        </form>
+        <p class="fine">Tickets are sold by Gipsy Nightclub. Each button takes you to Gipsy's ticket page for that show.</p>
       </div>
     </section>
 
@@ -221,16 +358,16 @@
           <p>Doors open at 7:00 PM and the show starts at 8:00 PM. Come early to grab a drink and settle in before the lights go down.</p>
         </details>
         <details>
-          <summary>How do I get my tickets?</summary>
-          <p>Buy right here on this page. As soon as your payment goes through you'll see your tickets, each with its own QR code, and we'll send a link to your email. Show the QR code (or a screenshot of it) at the door — every guest gets their own code, even at a table.</p>
+          <summary>Where do I buy tickets?</summary>
+          <p>Tickets are sold by Gipsy Nightclub. Pick your show above and tap General Admission, VIP or Table — you'll go straight to Gipsy's ticket page to check out.</p>
         </details>
         <details>
           <summary>What's the difference between GA, VIP and a table?</summary>
-          <p>General Admission gets you in with open seating. VIP puts you in premium seats close to the stage. A table reserves a spot for your whole group — each guest gets their own ticket, so friends can arrive separately.</p>
+          <p>General Admission gets you in with open seating. VIP puts you in premium seats close to the stage. A table reserves a spot for your whole group.</p>
         </details>
         <details>
-          <summary>I lost my tickets.</summary>
-          <p>Open the link in your confirmation email to see them again. No email? Come to the door with your ID — we can find you on the guest list by name.</p>
+          <summary>I have a question about my tickets.</summary>
+          <p>Tickets are handled by Gipsy Nightclub, so check your Gipsy confirmation email or contact Gipsy directly for changes, refunds or lost tickets.</p>
         </details>
         <details>
           <summary>Who is behind TASTE?</summary>
@@ -336,7 +473,7 @@
       <div>
         <h4>Tickets</h4>
         <a href="#dates">Upcoming Shows</a>
-        <a href="#faq">Lost Tickets</a>
+        <a href="#faq">Ticket Questions</a>
         <a href="#dates" class="btn btn--small">Get Tickets</a>
       </div>
       <div>
@@ -364,19 +501,7 @@
 
   <a href="#dates" class="sticky-buy btn btn--primary" id="sticky-buy">Get Tickets</a>
 
-  <div class="modal" id="pay-modal" hidden>
-    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="pay-title">
-      <div class="modal__head">
-        <h3 id="pay-title">Payment</h3>
-        <button class="modal__close" type="button" id="pay-close" aria-label="Close">&times;</button>
-      </div>
-      <p class="fine" id="pay-hold">Your seats are held for 30 minutes.</p>
-      <div id="stripe-checkout"></div>
-    </div>
-  </div>
 
-  <script src="assets/js/config.js?v=3"></script>
-  <script src="assets/js/api.js?v=3"></script>
-  <script src="assets/js/main.js?v=3"></script>
+  <script src="assets/js/main.js?v=4"></script>
 </body>
 </html>
