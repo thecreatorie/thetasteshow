@@ -4,6 +4,14 @@
    Body: Space Grotesk
    ═══════════════════════════════════════════════════════════════ */
 
+/* Self-hosted web fonts (latin subset, from Google Fonts; see assets/fonts/LICENSE.txt) */
+@font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 600; font-display: swap; src: url(../fonts/barlow-condensed-600.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 800; font-display: swap; src: url(../fonts/barlow-condensed-800.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Barlow Condensed"; font-style: italic; font-weight: 700; font-display: swap; src: url(../fonts/barlow-condensed-700-italic.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Barlow Condensed"; font-style: italic; font-weight: 900; font-display: swap; src: url(../fonts/barlow-condensed-900-italic.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 300 700; font-display: swap; src: url(../fonts/space-grotesk-var.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Yellowtail"; font-style: normal; font-weight: 400; font-display: swap; src: url(../fonts/yellowtail-400.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
 :root {
   /* Surfaces */
   --black: #07020d;
@@ -59,6 +67,7 @@ body {
   overflow-x: hidden;
 }
 img, svg, video, iframe { max-width: 100%; display: block; }
+picture { display: contents; }
 a { color: var(--pink); }
 a:hover { color: var(--white); }
 :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
@@ -225,6 +234,7 @@ p { margin: 0 0 1em; }
   background: radial-gradient(ellipse at 50% 120%, #3d0a2c 0%, transparent 60%), radial-gradient(ellipse at 100% 0%, rgba(255, 138, 30, .12), transparent 50%), var(--black);
 }
 .hero__bg { position: absolute; inset: 0; pointer-events: none; }
+.hero__bg .bokeh { top: -10vh; } /* anchor to the viewport, not hero height, so the hero growing as fonts load isn't a layout shift */
 .hero__inner {
   position: relative; z-index: 1;
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center;
@@ -288,6 +298,7 @@ p { margin: 0 0 1em; }
 .about__dancer {
   position: absolute; right: -40px; top: 50%; transform: translateY(-50%);
   height: 115%; width: auto; opacity: .09; pointer-events: none;
+  object-fit: contain; object-position: right center; /* never stretch when max-width clamps it */
   filter: drop-shadow(0 0 30px var(--magenta));
 }
 .about__grid { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 6vw, 80px); align-items: center; }
@@ -449,7 +460,7 @@ details p { padding-bottom: 22px; margin: 0; color: var(--silver); }
 .footer { border-top: 1px solid var(--line); padding: 64px 0 100px; background: var(--black); }
 .footer__grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.2fr 1fr; gap: 28px; }
 .footer__logo { width: 200px; height: auto; margin-bottom: 14px; }
-.footer h4 { color: #fff3d6; margin-bottom: 14px; font: 400 1.7rem/1.2 var(--script); text-transform: none; letter-spacing: 0; text-shadow: 0 0 6px var(--gold), 0 0 14px rgba(255, 171, 46, .6); }
+.footer__heading { color: #fff3d6; margin: 0 0 14px; font: 400 1.7rem/1.2 var(--script); text-transform: none; letter-spacing: 0; text-shadow: 0 0 6px var(--gold), 0 0 14px rgba(255, 171, 46, .6); }
 .footer__grid a:not(.btn) { display: block; color: var(--silver); text-decoration: none; margin-bottom: 8px; }
 .footer__grid a:not(.btn):hover { color: var(--white); }
 .footer__grid .btn { margin-top: 6px; }

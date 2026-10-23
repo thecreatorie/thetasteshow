@@ -9,13 +9,14 @@ It's a static site: plain HTML, CSS and a little JavaScript, with no build step 
 
 ## Adding ticket links
 
-The 2027 shows are in the **Tickets** section of `index.html` (search for `class="show"`). Each show has three buttons:
+The 2027 shows are in the **Tickets** section of `index.html` (search for `class="show"`). Each show has three buttons.
+While tickets aren't on sale, a button is a plain `<span>` (not a link, so search engines don't see dead links):
 
 ```html
-<a class="tier is-soon" data-tier="ga" aria-disabled="true">…<span class="tier__cta">Coming soon</span></a>
+<span class="tier is-soon" data-tier="ga" aria-disabled="true">…<span class="tier__cta">Coming soon</span></span>
 ```
 
-To turn one on, add the Gipsy link and drop the "coming soon" bits:
+To turn one on, change the outer `<span>` into an `<a>` with the Gipsy link (remember the closing `</span>` becomes `</a>`), and drop the "coming soon" bits:
 
 ```html
 <a class="tier" data-tier="ga" href="https://…gipsy link…" target="_blank" rel="noopener">…<span class="tier__cta">Buy</span></a>
@@ -25,7 +26,8 @@ To turn one on, add the Gipsy link and drop the "coming soon" bits:
 
 Copy a `<article class="show" data-date="YYYY-MM-DD">` block and edit the date, times and links.
 Shows hide themselves automatically the day after they happen, and the "Next show" badge in the hero
-updates to the next upcoming date.
+updates to the next upcoming date. (The badge text is also written into `index.html` so it shows instantly — update it there
+when the first listed show changes.)
 
 ## Files
 
@@ -34,7 +36,10 @@ updates to the next upcoming date.
 | `index.html` | The whole site |
 | `assets/css/style.css` | Vegas neon design system |
 | `assets/js/main.js` | Mobile menu, sticky ticket button, next-show badge, hiding past shows |
-| `assets/img/` | Logo, photos, favicon and social share image |
+| `assets/img/` | Logo, photos, favicon and social share image. Photos also have resized `-480`/`-800`/… `.webp` copies used via `<picture>`/`srcset`; regenerate them if you replace a photo |
+| `assets/fonts/` | Self-hosted web fonts (Barlow Condensed, Space Grotesk, Yellowtail) |
+| `robots.txt`, `sitemap.xml` | Crawler rules (search engines and AI assistants allowed) and sitemap |
+| `llms.txt`, `llms-full.txt` | Plain-text summary of the show for AI assistants ([llmstxt.org](https://llmstxt.org)); update with new dates |
 | `.github/workflows/pages.yml` | Deploys to GitHub Pages |
 
 ## Custom domain
