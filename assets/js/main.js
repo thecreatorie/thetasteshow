@@ -13,7 +13,9 @@
   });
   if (shows.length) {
     var d = new Date(shows[0].dataset.date + "T12:00:00");
-    heroNext.textContent = "Next show: " + d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }) + " · Gipsy Nightclub";
+    // index.html ships with the first show pre-rendered (no layout shift); only update if it changed.
+    var next = "Next show: " + d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }) + " · Gipsy Nightclub";
+    if (heroNext.textContent !== next) heroNext.textContent = next;
   } else {
     heroNext.textContent = "New dates coming soon";
     var list = document.querySelector(".show-list");
